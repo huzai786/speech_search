@@ -1,23 +1,42 @@
-import speech_recognition as sr
-import os
-import time
-import pyaudio
-from gtts import gTTs
+from pynput import keyboard
+import requests 
+import webbrowser
+from packages.utils import (
+    speak,
+    get_audio
+)
 
 
-r = sr.Recognizer()
+def voice_search():
+    speak('initiated')
+    text = get_audio()
+    if 'search' in text:
+        word = text.replace('search', '')
+        print(f'searching {word}')
+        speak(f'searching {word}')
+        webbrowser.open(f'https://www.google.com/search?q={word}')
+    if "hello" in text:
+        speak('Hi welcome to your voice assistant, how can i help you')
+    if 'what is your name' in text:
+        speak("my name is alexa don't you know?")
+
+
+def on_press(key):
+    if key == keyboard.Key.esc:
+        return True
+    try:
+        k = key.char
+    except:
+        k = key.name
+    if k in ['1', '2', 'left']:
+        print(k)
+        voice_search()
+        return False
 
 
 
 while True:
-    try:
-        with sr.Microphone() as source:
-            r.adjust_for_ambient_noise(source, duration=0.8)
-            audio = r.listen(source)
-            text = r.recognize_google(audio)
-            print(text)
-            
-    except Exception as e:
-        print(e)
-
+    listener = keyboard.Listener(on_press = on_press)
+    listener.start()
+    listener.join()
 
