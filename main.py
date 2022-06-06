@@ -1,15 +1,13 @@
 import speech_recognition as sr
+import os
+import time
 import pyaudio
+from gtts import gTTs
+
 
 r = sr.Recognizer()
 
-# with sr.Microphone() as source:
-#     print('say something!')
-#     audio = r.listen(source)
-#     sr.adjust_for_ambient_noise(source)
-#     voice_data = r.recognize_google(audio)
-#     print(voice_data)
-    
+
 
 while True:
     try:
@@ -21,4 +19,5 @@ while True:
             
     except Exception as e:
         print(e)
-        
+
+
